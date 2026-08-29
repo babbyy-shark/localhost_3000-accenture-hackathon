@@ -25,4 +25,5 @@ export type ChatResponsePayload = {
   model_routed?: string;
   cost_saved_pct?: number;
   final_risk_score: number;
+  policy_action?: string;
 };
