@@ -93,3 +93,37 @@
     @apply font-sans;
   }
 }
+.glass-panel {
+    background-color: rgba(24, 24, 27, 0.6);
+    backdrop-filter: blur(12px);
+    border: 1px solid #27272a;
+}
+.xray-panel {
+    background-color: rgba(9, 9, 11, 0.8);
+}
+.tooltip-float { animation: float 3s ease-in-out infinite; }
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0px); }
+}
+.pulse-indicator { animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+@keyframes pulse-ring {
+    0% { transform: scale(0.8); opacity: 1; }
+    100% { transform: scale(2); opacity: 0; }
+}
+
+/* Glowing Borders */
+.border-glow-indigo {
+    box-shadow: 0 0 8px 0 rgba(192, 193, 255, 0.2);
+    border: 1px solid rgba(192, 193, 255, 0.3);
+}
+.border-glow-emerald {
+    box-shadow: 0 0 8px 0 rgba(78, 222, 163, 0.2);
+    border: 1px solid rgba(78, 222, 163, 0.3);
+}
+.border-glow-amber {
+    box-shadow: 0 0 8px 0 rgba(255, 185, 95, 0.2);
+    border: 1px solid rgba(255, 185, 95, 0.3);
+}
+

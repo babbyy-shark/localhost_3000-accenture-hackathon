@@ -80,37 +80,41 @@ export default function DemoPage() {
   );
 
   const rightPanel = (
-    <div className="flex flex-col h-full bg-[#12121A]">
-      <div className="flex justify-between items-center p-4 border-b border-[#1E1E2E]">
-        <div className="flex space-x-2">
-          <button 
-            className={`px-4 py-2 text-sm rounded ${viewMode === 'xray' ? 'bg-indigo-600 text-white' : 'bg-[#1E1E2E] text-slate-400 hover:text-white'}`}
-            onClick={() => setViewMode('xray')}
-          >
-            Live X-Ray
-          </button>
-          <button 
-            className={`px-4 py-2 text-sm rounded ${viewMode === 'ciso' ? 'bg-indigo-600 text-white' : 'bg-[#1E1E2E] text-slate-400 hover:text-white'}`}
-            onClick={() => setViewMode('ciso')}
-          >
-            CISO Dashboard
-          </button>
+    <div className="flex flex-col h-full bg-transparent">
+      <header className="h-16 px-8 w-full border-b border-[#27272a] flex items-center justify-between shrink-0">
+        <div className="flex items-center gap-3">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#ffb95f]">
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="12" r="6" />
+            <circle cx="12" cy="12" r="2" />
+          </svg>
+          <h1 className="text-xl font-medium text-[#e5e1e4]">X-Ray Monitoring</h1>
         </div>
-        
-        {viewMode === 'xray' && (
-          <div className="flex items-center space-x-2">
-            <span className="text-xs text-slate-400">Active Policy:</span>
-            <select 
-              className="bg-[#1E1E2E] border border-slate-700 text-slate-200 text-xs rounded px-2 py-1"
-              value={policy}
-              onChange={(e) => setPolicy(e.target.value as any)}
+        <div className="flex items-center gap-4">
+          <div className="flex space-x-2">
+            <button 
+              className={`px-3 py-1 text-xs font-mono rounded ${viewMode === 'xray' ? 'bg-[#c0c1ff] text-[#0d0096]' : 'bg-[#201f22] text-[#c7c4d7] hover:text-white'}`}
+              onClick={() => setViewMode('xray')}
             >
-              <option value="customer_chatbot">Customer Chatbot (Strict)</option>
-              <option value="internal_copilot">Internal Copilot (Permissive)</option>
-            </select>
+              Live X-Ray
+            </button>
+            <button 
+              className={`px-3 py-1 text-xs font-mono rounded ${viewMode === 'ciso' ? 'bg-[#c0c1ff] text-[#0d0096]' : 'bg-[#201f22] text-[#c7c4d7] hover:text-white'}`}
+              onClick={() => setViewMode('ciso')}
+            >
+              CISO
+            </button>
           </div>
-        )}
-      </div>
+          
+          <div className="flex items-center gap-2">
+            <span className="text-[12px] font-mono font-medium tracking-wider text-[#4edea3] uppercase">Live Telemetry</span>
+            <div className="relative h-2 w-2">
+              <span className="absolute inline-flex h-full w-full rounded-full bg-[#4edea3] pulse-indicator"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4edea3]"></span>
+            </div>
+          </div>
+        </div>
+      </header>
 
       <div className="flex-1 overflow-y-auto">
         {viewMode === 'xray' ? (

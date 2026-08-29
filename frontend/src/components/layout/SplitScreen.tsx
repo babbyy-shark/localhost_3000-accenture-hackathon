@@ -7,16 +7,17 @@ interface SplitScreenProps {
 
 export function SplitScreen({ leftPanel, rightPanel }: SplitScreenProps) {
   return (
-    <div className="flex h-screen w-full bg-[#0A0A0F] text-slate-100 overflow-hidden">
+    <div className="flex h-screen w-full bg-[#09090b] text-[#e5e1e4] overflow-hidden flex-col md:flex-row font-sans">
       {/* Left Panel: Employee Chat View */}
-      <div className="w-1/2 h-full border-r border-[#1E1E2E] flex flex-col bg-[#0A0A0F]">
+      <section className="flex-1 flex flex-col border-r border-[#27272a] h-full relative z-10 bg-[#09090b]">
         {leftPanel}
-      </div>
+      </section>
       
       {/* Right Panel: ControlPlane Dashboard (X-Ray) */}
-      <div className="w-1/2 h-full flex flex-col bg-[#12121A] overflow-y-auto">
+      <section className="flex-1 flex flex-col xray-panel h-full relative z-10 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-[#131315] to-[#09090b]">
+        {/* Header is handled in page.tsx or within rightPanel but we can wrap it if needed */}
         {rightPanel}
-      </div>
+      </section>
     </div>
   );
 }
