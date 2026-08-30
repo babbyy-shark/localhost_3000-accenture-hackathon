@@ -21,7 +21,7 @@ ControlPlane.ai solves this using a 4-layer inspection pipeline alongside a cent
 * **Layer 3: Fact Checking (NLI)**
   Intercepts the AI's response before it is shown to the user and cross-references it, placing a visual warning underline on any hallucinated facts.
 
-### 📊 New Round 2 Features
+### 📊 Round 2 Features
 * **CISO Governance Dashboard:** A dedicated stakeholder view to monitor real-time API traffic, false positive/negative rates, and threat interception metrics.
 * **Configurable Policy Engine:** Switch between strict profiles (e.g., Customer Chatbot) and permissive profiles (e.g., Internal Copilot) to see the composite risk engine adapt dynamically.
 * **Multi-Turn Context:** The backend now tracks conversational history, evaluating compounding risks across multiple messages.
