@@ -3,9 +3,10 @@ import React, { useEffect, useRef } from 'react';
 interface SplitScreenProps {
   leftPanel: React.ReactNode;
   rightPanel: React.ReactNode;
+  headerActions?: React.ReactNode;
 }
 
-export function SplitScreen({ leftPanel, rightPanel }: SplitScreenProps) {
+export function SplitScreen({ leftPanel, rightPanel, headerActions }: SplitScreenProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -190,13 +191,16 @@ void main() {
           </svg>
           <span className="text-2xl font-bold glow-text-primary tracking-widest uppercase">ControlPlane.ai</span>
         </div>
-        <div className="flex flex-col items-end gap-1">
-          <div className="text-xs font-mono text-[#c0c1ff]/70 tracking-widest bg-[#131315]/40 backdrop-blur-md px-3 py-1 rounded-full border border-[#c0c1ff]/20">
-            SYS.OP.MODE: <span className="glow-text-primary">X-RAY_ACTIVE</span>
-          </div>
-          <div className="text-[10px] font-mono text-[#4edea3] tracking-widest flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#4edea3] animate-pulse shadow-[0_0_8px_#4edea3]"></span>
-            NEURAL STATUS: Network Active
+        <div className="flex items-center gap-6 pointer-events-auto">
+          {headerActions}
+          <div className="flex flex-col items-end gap-1">
+            <div className="text-xs font-mono text-[#c0c1ff]/70 tracking-widest bg-[#131315]/40 backdrop-blur-md px-3 py-1 rounded-full border border-[#c0c1ff]/20">
+              SYS.OP.MODE: <span className="glow-text-primary">X-RAY_ACTIVE</span>
+            </div>
+            <div className="text-[10px] font-mono text-[#4edea3] tracking-widest flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-[#4edea3] animate-pulse shadow-[0_0_8px_#4edea3]"></span>
+              NEURAL STATUS: Network Active
+            </div>
           </div>
         </div>
       </header>

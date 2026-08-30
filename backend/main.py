@@ -100,18 +100,18 @@ async def chat_endpoint(request: ChatRequest):
     # LAYER 2: Model Routing & Cost Engine (Dynamic based on prompt complexity)
     word_count = len(original_prompt.split())
     if word_count > 50:
-        model_routed = "gemini/gemini-1.5-pro"
+        model_routed = "gemini/gemini-3.5-pro"
         cost_saved_pct = 0
     elif word_count > 15:
-        model_routed = "gemini/gemini-1.5-flash"
+        model_routed = "gemini/gemini-3.5-flash"
         cost_saved_pct = 75
     else:
-        model_routed = "gemini/gemini-1.5-flash"
+        model_routed = "gemini/gemini-3.5-flash"
         cost_saved_pct = 98
 
     # Override for the specific demo trigger if needed
     if is_cost:
-        model_routed = "gemini/gemini-1.5-flash"
+        model_routed = "gemini/gemini-3.5-flash"
         cost_saved_pct = 98
     
     safe_messages = request.messages.copy()

@@ -89,7 +89,24 @@ export default function DemoPage() {
     </div>
   );
 
+  const headerActions = (
+    <div className="flex space-x-2">
+      <button 
+        className={`px-3 py-1 text-xs font-mono rounded border ${viewMode === 'xray' ? 'bg-[#c0c1ff]/20 border-[#c0c1ff] text-[#c0c1ff] glow-text-primary' : 'bg-transparent border-[#464554] text-[#c7c4d7] hover:border-[#c0c1ff]/50 hover:text-[#c0c1ff]'}`}
+        onClick={() => setViewMode('xray')}
+      >
+        Neural Mesh
+      </button>
+      <button 
+        className={`px-3 py-1 text-xs font-mono rounded border ${viewMode === 'ciso' ? 'bg-[#c0c1ff]/20 border-[#c0c1ff] text-[#c0c1ff] glow-text-primary' : 'bg-transparent border-[#464554] text-[#c7c4d7] hover:border-[#c0c1ff]/50 hover:text-[#c0c1ff]'}`}
+        onClick={() => setViewMode('ciso')}
+      >
+        CISO View
+      </button>
+    </div>
+  );
+
   return (
-    <SplitScreen leftPanel={leftPanel} rightPanel={rightPanel} />
+    <SplitScreen leftPanel={leftPanel} rightPanel={rightPanel} headerActions={headerActions} />
   );
 }
