@@ -80,49 +80,12 @@ export default function DemoPage() {
   );
 
   const rightPanel = (
-    <div className="flex flex-col h-full bg-transparent">
-      <header className="h-16 px-8 w-full border-b border-[#27272a] flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-3">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="text-[#ffb95f]">
-            <circle cx="12" cy="12" r="10" />
-            <circle cx="12" cy="12" r="6" />
-            <circle cx="12" cy="12" r="2" />
-          </svg>
-          <h1 className="text-xl font-medium text-[#e5e1e4]">X-Ray Monitoring</h1>
-        </div>
-        <div className="flex items-center gap-4">
-          <div className="flex space-x-2">
-            <button 
-              className={`px-3 py-1 text-xs font-mono rounded ${viewMode === 'xray' ? 'bg-[#c0c1ff] text-[#0d0096]' : 'bg-[#201f22] text-[#c7c4d7] hover:text-white'}`}
-              onClick={() => setViewMode('xray')}
-            >
-              Live X-Ray
-            </button>
-            <button 
-              className={`px-3 py-1 text-xs font-mono rounded ${viewMode === 'ciso' ? 'bg-[#c0c1ff] text-[#0d0096]' : 'bg-[#201f22] text-[#c7c4d7] hover:text-white'}`}
-              onClick={() => setViewMode('ciso')}
-            >
-              CISO
-            </button>
-          </div>
-          
-          <div className="flex items-center gap-2">
-            <span className="text-[12px] font-mono font-medium tracking-wider text-[#4edea3] uppercase">Live Telemetry</span>
-            <div className="relative h-2 w-2">
-              <span className="absolute inline-flex h-full w-full rounded-full bg-[#4edea3] pulse-indicator"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-[#4edea3]"></span>
-            </div>
-          </div>
-        </div>
-      </header>
-
-      <div className="flex-1 overflow-y-auto">
-        {viewMode === 'xray' ? (
-          <DashboardPanel chatState={chatState} isLoading={isLoading} />
-        ) : (
-          <CisoDashboard metrics={metrics} />
-        )}
-      </div>
+    <div className="w-full h-full">
+      {viewMode === 'xray' ? (
+        <DashboardPanel chatState={chatState} isLoading={isLoading} />
+      ) : (
+        <CisoDashboard metrics={metrics} />
+      )}
     </div>
   );
 
