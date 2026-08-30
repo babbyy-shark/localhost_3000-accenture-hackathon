@@ -2,7 +2,6 @@
 
 **ControlPlane.ai** is an enterprise-grade middleware layer designed to sit between your employees and external Large Language Models (LLMs). It intercepts, analyzes, and scrubs prompts to prevent sensitive data leaks, while dynamically routing queries to optimize costs and fact-checking AI responses to prevent hallucinations.
 
-Built for the **Accenture Hackathon** (Updated for Round 2).
 
 ## 🚀 The Problem
 When enterprises use public LLMs, they face three massive risks:
