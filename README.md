@@ -18,7 +18,7 @@ ControlPlane.ai solves this using a 4-layer inspection pipeline alongside a cent
 * **Layer 1: PII Vault (Powered by Microsoft Presidio)**
   Scans the prompt for sensitive data (SSNs, Names, Emails) and redacts them into safe tokens (e.g., `<EMAIL_ADDRESS>`) before the prompt reaches the LLM.
 * **Layer 2: Smart Routing & Cost Engine**
-  Dynamically analyzes the complexity of the prompt and routes it to the most cost-effective model (e.g., `gemini-1.5-flash`), saving up to 98% on API costs.
+  Dynamically analyzes the complexity of the prompt and routes it to the most cost-effective model (e.g., `gemini-3.6-flash`), saving up to 98% on API costs.
 * **Layer 3: Fact Checking (NLI)**
   Intercepts the AI's response before it is shown to the user and cross-references it, placing a visual warning underline on any hallucinated facts.
 
@@ -30,7 +30,7 @@ ControlPlane.ai solves this using a 4-layer inspection pipeline alongside a cent
 
 ## 💻 Tech Stack
 * **Frontend:** Next.js 14, React, Tailwind CSS, Shadcn UI
-* **Backend:** FastAPI, Python, Microsoft Presidio (NLP), LiteLLM, Google Gemini 1.5 Flash API
+* **Backend:** FastAPI, Python, Microsoft Presidio (NLP), LiteLLM, Google Gemini 3.6 Flash API
 
 ## 🚦 How to Run Locally
 
