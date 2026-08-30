@@ -6,8 +6,10 @@ import os
 from dotenv import load_dotenv
 import litellm
 import asyncio
+import random
 from presidio_analyzer import AnalyzerEngine
 from presidio_anonymizer import AnonymizerEngine
+from presidio_anonymizer.entities import OperatorConfig
 
 load_dotenv()
 
@@ -70,24 +72,47 @@ async def chat_endpoint(request: ChatRequest):
             }
     
     # LAYER 1: PII Vault
-    results = analyzer.analyze(text=safe_prompt, entities=["PERSON", "EMAIL_ADDRESS", "PHONE_NUMBER"], language='en')
+    results = analyzer.analyze(text=safe_prompt, entities=["PERSON", "EMAIL_ADDRESS", "PHONE_NUMBER", "US_SSN"], language='en')
     if results:
         # Filter out common false positives from the NLP model
         filtered_results = [r for r in results if not (r.entity_type == 'PERSON' and safe_prompt[r.start:r.end].lower().strip(',: ') == 'email')]
         
+        # Generate a synthetic SSN for this request
+        fake_ssn = f"{random.randint(100,999)}-{random.randint(10,99)}-{random.randint(1000,9999)}"
+        
         # Reconstruct vault events for UI using original results to avoid index shifting
         for r in filtered_results:
             original_text = safe_prompt[r.start:r.end]
-            vault_events.append({"original": original_text, "redacted": r.entity_type})
+            if r.entity_type == 'US_SSN':
+                vault_events.append({"original": original_text, "redacted": fake_ssn})
+            else:
+                vault_events.append({"original": original_text, "redacted": r.entity_type})
             
-        anonymized = anonymizer.anonymize(text=safe_prompt, analyzer_results=filtered_results)
+        operators = {
+            "US_SSN": OperatorConfig("replace", {"new_value": fake_ssn})
+        }
+            
+        anonymized = anonymizer.anonymize(text=safe_prompt, analyzer_results=filtered_results, operators=operators)
         safe_prompt = anonymized.text
         if final_risk_score < 0.4:
             final_risk_score += 0.3 
             
-    # LAYER 2: Model Routing & Calling
-    model_routed = "gemini/gemini-3.6-flash" if is_cost else "gemini/gemini-3.7-pro"
-    cost_saved_pct = 98 if is_cost else 0
+    # LAYER 2: Model Routing & Cost Engine (Dynamic based on prompt complexity)
+    word_count = len(original_prompt.split())
+    if word_count > 50:
+        model_routed = "gemini/gemini-1.5-pro"
+        cost_saved_pct = 0
+    elif word_count > 15:
+        model_routed = "gemini/gemini-1.5-flash"
+        cost_saved_pct = 75
+    else:
+        model_routed = "gemini/gemini-1.5-flash"
+        cost_saved_pct = 98
+
+    # Override for the specific demo trigger if needed
+    if is_cost:
+        model_routed = "gemini/gemini-1.5-flash"
+        cost_saved_pct = 98
     
     safe_messages = request.messages.copy()
     if safe_messages:
@@ -95,26 +120,13 @@ async def chat_endpoint(request: ChatRequest):
 
     try:
         if os.environ.get("GEMINI_API_KEY"):
-            import requests
-            import urllib3
-            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
-            
-            api_key = os.environ.get("GEMINI_API_KEY")
-            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key={api_key}"
-            
-            payload = {"contents": []}
-            for msg in safe_messages:
-                role = "model" if msg["role"] == "assistant" else "user"
-                payload["contents"].append({"role": role, "parts": [{"text": msg["content"]}]})
-                
-            headers = {'Content-Type': 'application/json'}
-            res = requests.post(url, json=payload, headers=headers, verify=False)
-            data = res.json()
-            
-            if "candidates" in data:
-                ai_response = data["candidates"][0]["content"]["parts"][0]["text"]
-            else:
-                ai_response = f"LLM Error: {data}"
+            # Use async completion to prevent blocking the FastAPI event loop
+            response = await litellm.acompletion(
+                model=model_routed,
+                messages=safe_messages,
+                api_key=os.environ.get("GEMINI_API_KEY")
+            )
+            ai_response = response.choices[0].message.content
         else:
             raise Exception("No API Key Provided")
             
